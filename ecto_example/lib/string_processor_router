@@ -1,0 +1,35 @@
+defmodule StringProcessorPlug do
+    use Plug.Router
+
+    plug(:match)
+    plug(:fetch_query_params)
+    plug(:dispatch)
+
+    get"/upcase" do
+        value  = conn.query_params["value"]
+        send_resp(conn, 200, String.upcase(value))
+    end
+    get "/downcase" do
+        value  = conn.query_params["value"]
+        send_resp(conn, 200, String.downcase(value))
+    end
+    get "/snakecase" do
+        value  = conn.query_params["value"]
+        send_resp(conn, 200, snakefy(value))
+    end
+     get "/camelcase" do
+        value  = conn.query_params["value"]
+        response = value |> snakefy()|> Macro.camelize()
+        send_resp(conn, 200, response)
+    end
+
+    match _ do
+        send_resp(conn, 404, "Not found!")
+    end
+
+    def snakefy(value) do
+      value
+      |> String.downcase()
+      |> String.replace(" ", "_")
+    end
+end
