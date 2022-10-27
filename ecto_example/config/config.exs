@@ -1,5 +1,7 @@
 import Config
 
+
+
 config :ecto_example, EctoExample.Hospital.Repo,
   database: System.get_env("DATABASE_NAME", "hospital_database"),
   username: System.get_env("DATABASE_USERNAME", "postgres"),
